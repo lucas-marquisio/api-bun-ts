@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { SignUpController } from './sign-up'
+import { BadRequest } from '../helpers/http-response-helpers'
+import { MissingParamError } from '../erros/missing-param-error'
 
 describe('SignUpController', () => {
   it('Should return 400 if no name is provide', async () => {
@@ -13,7 +15,6 @@ describe('SignUpController', () => {
       }
     }
     const response = await sut.handle(httpRequest)
-    expect(response.body.message).toBe('name')
-    expect(response.statusCode).toBe(400)
+    expect(response).toEqual(BadRequest(new MissingParamError('name')))
   })
 })
