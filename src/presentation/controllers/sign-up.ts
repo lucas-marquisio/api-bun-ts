@@ -1,5 +1,8 @@
-export class SignUpController {
-  handle (httpRequest: any): any {
+import type { Controller } from '../protocols/controller'
+import { HttpRequest, HttpResponse } from '../protocols/http'
+
+export class SignUpController implements Controller {
+  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const requiredFields = ['name']
     const body = httpRequest.body
 
@@ -9,6 +12,10 @@ export class SignUpController {
           statusCode: 400,
           body: new Error(field)
         }
+    }
+    return {
+      statusCode: 200,
+      body: {}
     }
   }
 }
