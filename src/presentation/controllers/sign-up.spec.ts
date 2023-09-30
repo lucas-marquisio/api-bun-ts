@@ -2,6 +2,7 @@ import { describe, expect, it } from 'bun:test'
 import { MissingParamError } from '../erros/missing-param-error'
 import { BadRequest } from '../helpers/http-response-helpers'
 import { SignUpController } from './sign-up'
+import { PasswordNotMatch } from '../erros/password-not-match'
 
 describe('SignUpController', () => {
   it('Should return 400 if no name is provide', async () => {
@@ -58,5 +59,19 @@ describe('SignUpController', () => {
     }
     const response = await sut.handle(httpRequest)
     expect(response).toEqual(BadRequest(new MissingParamError('passwordConfirmation')))
+  }),
+
+  it('Should return 400 if password not match with passwordConfirmation', async () => {
+    const sut = new SignUpController()
+    const httpRequest = {
+      body: {
+        email: 'email',
+        name: 'name',
+        password: 'password',
+        passwordConfirmation: 'password_error'
+      }
+    }
+    const response = await sut.handle(httpRequest)
+    expect(response).toEqual(BadRequest(new PasswordNotMatch()))
   })
 })
