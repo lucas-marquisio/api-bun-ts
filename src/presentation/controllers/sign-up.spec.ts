@@ -1,18 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-
-class SignUpController {
-  handle (httpRequest: any): any {
-    const requiredFields = ['name']
-    const body = httpRequest.body
-
-    for (const field of requiredFields) {
-      if(!body[field] || body[field] === '') return {
-        statusCode: 400,
-        body: new Error(field)
-      }
-    }
-  }
-}
+import { SignUpController } from './sign-up'
 
 describe('SignUpController', () => {
   it('Should return 400 if no name is provide', () => {
